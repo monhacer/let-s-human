@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Random USA Identity Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #eee;
+    margin: 20px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    align-items: flex-start;
+  }
+  #container {
+    max-width: 900px;
+    width: 100%;
+    background-color: #1f1f1f;
+    border-radius: 8px;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    /* subtle flat shadow */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  h2 {
+    border-bottom: 2px solid #3a85ff;
+    padding-bottom: 8px;
+    margin-top: 36px;
+    margin-bottom: 16px;
+    font-weight: 700;
+    color: #5393ff;
+  }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 36px;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+  }
+  tbody tr:not(:last-child) {
+    border-bottom: 1px solid #444;
+  }
+  td.label {
+    width: 190px;
+    font-weight: 600;
+    color: #9bbcff;
+    padding: 12px 14px;
+    vertical-align: top;
+    white-space: nowrap;
+    border-right: 1px solid #444;
+  }
+  td.value {
+    padding: 12px 14px;
+    word-break: break-word;
+    color: #ccc;
+  }
+  #generateBtn {
+    background-color: #2979ff;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 auto 24px auto;
+    display: block;
+    transition: background-color 0.3s ease;
+  }
+  #generateBtn:hover {
+    background-color: #3a85ff;
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <button id="generateBtn">Generate Random USA Identity</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const data = {
+      genders: ["Male", "Female"],
+      firstNamesMale: [
+        "James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph",
+        "Thomas", "Charles", "Christopher", "Daniel", "Matthew", "Anthony", "Donald",
+        "Mark", "Paul", "Steven", "Andrew", "Kenneth", "Joshua", "Kevin", "Brian",
+        "George", "Edward", "Ronald", "Timothy", "Jason", "Jeffrey", "Ryan", "Jacob",
+        "Gary", "Nicholas", "Eric", "Jonathan", "Stephen", "Larry", "Justin", "Scott",
+        "Brandon", "Benjamin", "Samuel", "Gregory", "Frank", "Alexander", "Raymond",
+        "Patrick", "Jack", "Dennis", "Jerry"
+      ],
+      firstNamesFemale: [
+        "Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara", "Susan",
+        "Jessica", "Sarah", "Karen", "Nancy", "Lisa", "Betty", "Margaret", "Sandra",
+        "Ashley", "Kimberly", "Emily", "Donna", "Michelle", "Dorothy", "Carol", "Amanda",
+        "Melissa", "Deborah", "Stephanie", "Rebecca", "Laura", "Sharon", "Cynthia",
+        "Kathleen", "Helen", "Amy", "Angela", "Anna", "Brenda", "Pamela", "Nicole",
+        "Samantha", "Katherine", "Emma", "Ruth", "Christine", "Catherine", "Debra",
+        "Virginia", "Rachel", "Janet", "Maria"
+      ],
+      lastNames: [
+        "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis",
+        "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson",
+        "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson",
+        "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson", "Walker",
+        "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill",
+        "Flores", "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell",
+        "Mitchell", "Carter"
+      ],
+      titlesMale: ["Mr.", "Dr.", "Prof.", "Sir", "Master"],
+      titlesFemale: ["Ms.", "Mrs.", "Dr.", "Prof.", "Miss"],
+      races: [
+        "Caucasian", "African American", "Asian", "Hispanic", "Native American",
+        "Pacific Islander", "Middle Eastern", "Mixed"
+      ],
+      heights: ["5'0\"", "5'1\"", "5'2\"", "5'3\"", "5'4\"", "5'5\"", "5'6\"", "5'7\"", "5'8\"", "5'9\"", "5'10\"", "5'11\"", "6'0\"", "6'1\"", "6'2\"", "6'3\"", "6'4\""],
+      weights: ["110 lbs", "120 lbs", "130 lbs", "140 lbs", "150 lbs", "160 lbs", "170 lbs", "180 lbs", "190 lbs", "200 lbs", "210 lbs", "220 lbs", "230 lbs"],
+      hairColors: ["Black", "Brown", "Blonde", "Red", "Gray", "White"],
+      bloodTypes: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+      civilStatuses: ["Single", "Married", "Divorced", "Widowed"],
+      educations: ["High School", "Associate Degree", "Bachelor's Degree", "Master's Degree", "PhD"],
+      employmentStatuses: ["Employed", "Unemployed", "Student", "Retired", "Self-Employed"],
+      companySizes: ["1-10", "11-50", "51-200", "201-500", "501-1000", "1001-5000", "5000+"],
+      industries: ["Technology", "Finance", "Healthcare", "Education", "Retail", "Manufacturing", "Construction", "Transportation", "Entertainment", "Government"],
+      vehicles: ["Car", "Motorcycle", "Bicycle", "Truck", "None"],
+      interests: ["Reading", "Traveling", "Sports", "Music", "Cooking", "Gaming", "Hiking", "Photography", "Movies", "Fitness"],
+      browsers: [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:117.0) Gecko/20100101 Firefox/117.0",
+        "Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.5790.97 Mobile Safari/537.36",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+      ],
+      systems: ["Windows 10", "Windows 11", "macOS Ventura", "Linux Ubuntu 22.04", "Android 13", "iOS 17"],
+      motherMaidenNames: [
+        "Smith", "Johnson", "Brown", "Williams", "Jones", "Miller", "Davis", "Garcia",
+        "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson"
+      ],
+      states: [
+        {abbr: "NY", full: "New York", zipcodes: ["10001", "10002", "10003", "10004", "10005"]},
+        {abbr: "CA", full: "California", zipcodes: ["90001", "90002", "90003", "90004", "90005"]},
+        {abbr: "TX", full: "Texas", zipcodes: ["75001", "75002", "75006", "75007", "75010"]},
+        {abbr: "FL", full: "Florida", zipcodes: ["32003", "32004", "32007", "32008", "32009"]},
+        {abbr: "IL", full: "Illinois", zipcodes: ["60007", "60008", "60010", "60011", "60012"]}
+      ],
+      streetNames: [
+        "Main St", "Maple Ave", "Oak St", "Pine St", "Cedar St", "Elm St", "Washington Ave",
+        "Lakeview Dr", "Sunset Blvd", "Park Ave", "2nd St", "3rd St", "1st Ave", "4th St", "5th Ave"
+      ],
+      companyNames: [
+        "TechCore", "BlueWave", "InnoSoft", "GreenTech", "CloudNet", "FutureWorks",
+        "Bright Solutions", "NextGen", "Alpha Dynamics", "SilverLine", "Prime Systems",
+        "Vertex Corp", "Pioneer LLC", "Summit Industries", "Nexus Global"
+      ],
+      telCountryCode: "+1"
+    };
+
+    function randomChoice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateBirthday() {
+      const start = new Date(1950, 0, 1).getTime();
+      const end = new Date(2005, 11, 31).getTime();
+      const birthdate = new Date(randomInt(start, end));
+      return birthdate.toISOString().slice(0, 10);
+    }
+
+    function generateSSN() {
+      const part1 = randomInt(100, 899);
+      const part2 = randomInt(10, 99);
+      const part3 = randomInt(1000, 9999);
+      return `${part1}-${part2}-${part3}`;
+    }
+
+    function generatePhoneNumber(areaCode) {
+      const part1 = randomInt(200, 999);
+      const part2 = randomInt(1000, 9999);
+      return `(${areaCode}) ${part1}-${part2}`;
+    }
+
+    function generateGUID() {
+      const s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+      return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
+    }
+
+    function generateIdentity() {
+      const gender = randomChoice(data.genders);
+      const firstName = gender === "Male" ? randomChoice(data.firstNamesMale) : randomChoice(data.firstNamesFemale);
+      const lastName = randomChoice(data.lastNames);
+      const title = gender === "Male" ? randomChoice(data.titlesMale) : randomChoice(data.titlesFemale);
+      const race = randomChoice(data.races);
+      const birthday = generateBirthday();
+      const ssn = generateSSN();
+
+      const state = randomChoice(data.states);
+      const streetNumber = randomInt(100, 9999);
+      const street = `${streetNumber} ${randomChoice(data.streetNames)}`;
+      const city = "Somewhere";
+      const stateAbbr = state.abbr;
+      const stateFull = state.full;
+      const zipcode = randomChoice(state.zipcodes);
+      const phoneNumber = generatePhoneNumber(zipcode.slice(0, 3));
+      const mobileNumber = generatePhoneNumber(zipcode.slice(0, 3));
+
+      const height = randomChoice(data.heights);
+      const weight = randomChoice(data.weights);
+      const hairColor = randomChoice(data.hairColors);
+      const bloodType = randomChoice(data.bloodTypes);
+      const motherMaidenName = randomChoice(data.motherMaidenNames);
+      const civilStatus = randomChoice(data.civilStatuses);
+      const education = randomChoice(data.educations);
+
+      const employmentStatus = randomChoice(data.employmentStatuses);
+      const monthlySalary = `$${randomInt(2000, 15000).toLocaleString()}`;
+      const companyName = randomChoice(data.companyNames);
+      const companySize = randomChoice(data.companySizes);
+      const industry = randomChoice(data.industries);
+
+      const vehicle = randomChoice(data.vehicles);
+      const interest = randomChoice(data.interests);
+
+      const browser = randomChoice(data.browsers);
+      const system = randomChoice(data.systems);
+      const guid = generateGUID();
+      const telCountryCode = data.telCountryCode;
+
+      return `
+        <h2>BIO INFO</h2>
+        <table>
+          <tbody>
+            <tr><td class="label">First Name:</td><td class="value">${firstName}</td></tr>
+            <tr><td class="label">Last Name:</td><td class="value">${lastName}</td></tr>
+            <tr><td class="label">Gender:</td><td class="value">${gender}</td></tr>
+            <tr><td class="label">Title:</td><td class="value">${title}</td></tr>
+            <tr><td class="label">Race:</td><td class="value">${race}</td></tr>
+            <tr><td class="label">Birthday:</td><td class="value">${birthday}</td></tr>
+            <tr><td class="label">SSN:</td><td class="value">${ssn}</td></tr>
+          </tbody>
+        </table>
+
+        <h2>ADDRESS</h2>
+        <table>
+          <tbody>
+            <tr><td class="label">Street:</td><td class="value">${street}</td></tr>
+            <tr><td class="label">City:</td><td class="value">${city}</td></tr>
+            <tr><td class="label">State Abbr:</td><td class="value">${stateAbbr}</td></tr>
+            <tr><td class="label">State Full:</td><td class="value">${stateFull}</td></tr>
+            <tr><td class="label">Zipcode:</td><td class="value">${zipcode}</td></tr>
+            <tr><td class="label">Phone Number:</td><td class="value">${phoneNumber}</td></tr>
+            <tr><td class="label">Mobile Number:</td><td class="value">${mobileNumber}</td></tr>
+          </tbody>
+        </table>
+
+        <h2>SAMPLE MORE INFORMATION</h2>
+        <table>
+          <tbody>
+            <tr><td class="label">Height:</td><td class="value">${height}</td></tr>
+            <tr><td class="label">Weight:</td><td class="value">${weight}</td></tr>
+            <tr><td class="label">Hair Color:</td><td class="value">${hairColor}</td></tr>
+            <tr><td class="label">Blood Type:</td><td class="value">${bloodType}</td></tr>
+            <tr><td class="label">Mother's Maiden Name:</td><td class="value">${motherMaidenName}</td></tr>
+            <tr><td class="label">Civil Status:</td><td class="value">${civilStatus}</td></tr>
+            <tr><td class="label">Education:</td><td class="value">${education}</td></tr>
+          </tbody>
+        </table>
+
+        <h2>EMPLOYMENT INFORMATION</h2>
+        <table>
+          <tbody>
+            <tr><td class="label">Employment Status:</td><td class="value">${employmentStatus}</td></tr>
+            <tr><td class="label">Monthly Salary:</td><td class="value">${monthlySalary}</td></tr>
+            <tr><td class="label">Company Name:</td><td class="value">${companyName}</td></tr>
+            <tr><td class="label">Company Size:</td><td class="value">${companySize}</td></tr>
+            <tr><td class="label">Industry:</td><td class="value">${industry}</td></tr>
+          </tbody>
+        </table>
+
+        <h2>PERSONAL INFORMATION</h2>
+        <table>
+          <tbody>
+            <tr><td class="label">Vehicle:</td><td class="value">${vehicle}</td></tr>
+            <tr><td class="label">Interest:</td><td class="value">${interest}</td></tr>
+          </tbody>
+        </table>
+
+        <h2>ONLINE PROFILE</h2>
+        <table>
+          <tbody>
+            <tr><td class="label">Browser User Agent:</td><td class="value">${browser}</td></tr>
+            <tr><td class="label">System:</td><td class="value">${system}</td></tr>
+            <tr><td class="label">GUID:</td><td class="value">${guid}</td></tr>
+            <tr><td class="label">Telephone Country Code:</td><td class="value">${telCountryCode}</td></tr>
+          </tbody>
+        </table>
+      `;
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", () => {
+      document.getElementById("output").innerHTML = generateIdentity();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Initial generation on page load
+    document.getElementById("generateBtn").click();
+  </script>
+</body>
+</html>
